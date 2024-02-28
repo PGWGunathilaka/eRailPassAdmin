@@ -3,15 +3,15 @@ import TrainIcon from '@mui/icons-material/Train';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useMemo } from "react";
-import { Train, trLine, trStatus } from '../Types/Train';
+import { Train, TrainLine, TrainStatus } from '../models/Train';
 export const TrainProfiles: React.FunctionComponent = () => {// Create a state  
     const profiles: Train[] = useMemo(() => [{
         trNo: 1015,
         trName: "Udarata Manike",
-        trLine: trLine.MATALE_LINE,
+        trLine: TrainLine.MATALE_LINE,
         trFrom: "Colombo Fort",
         trTo: "Badulla",
-        trStatus: trStatus.RUNNING
+        trStatus: TrainStatus.RUNNING
     },
 
     ], [])

@@ -3,8 +3,8 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import React, { useMemo } from "react";
-import { StationMaster } from "../../Types/StationMaster";
-import { UserType } from '../../Types/UserType';
+import { StationMaster } from "../../models/StationMaster";
+import { UserType } from '../../models/UserType';
 import { StationDeletePopup } from '../Stations/StationDeletePopup';
 import { StationMastersDeletePopup } from './StationMastersDeletePopup';
 export const StationMasters: React.FunctionComponent = () => {// Create a state  

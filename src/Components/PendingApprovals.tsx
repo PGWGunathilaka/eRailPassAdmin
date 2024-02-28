@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import { PendingApproval, PendingApprovalStatus } from "../Types/PendingApproval";
-import { UserType } from "../Types/UserType";
+import { PendingApproval, PendingApprovalStatus } from "../models/PendingApproval";
+import { UserType } from "../models/UserType";
 export const PendingApprovals: React.FunctionComponent = () => {// Create a state  
 
     const profiles: PendingApproval[] = useMemo(() => [{

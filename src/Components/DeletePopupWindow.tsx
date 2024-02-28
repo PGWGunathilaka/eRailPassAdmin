@@ -1,7 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
 import React, { Children, ReactNode } from "react";
-import { Station } from '../Types/Station';
+import { Station } from '../models/Station';
 import WarningIcon from '@mui/icons-material/Warning';
 
 interface DeletePopupWindowProps { 

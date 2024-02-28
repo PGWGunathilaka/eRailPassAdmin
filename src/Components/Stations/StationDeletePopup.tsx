@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import DeletePopupWindow from "../DeletePopupWindow";
-import { Station } from "../../Types/Station";
+import { Station } from "../../models/Station";
 
 export const StationDeletePopup: React.FC<{ deletingStation: Station|null, onClose: () => void }> = ({ deletingStation, onClose }) => {
     return (

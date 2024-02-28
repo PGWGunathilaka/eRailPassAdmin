@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import { StationMaster } from "../../Types/StationMaster";
+import { StationMaster } from "../../models/StationMaster";
 import DeletePopupWindow from "../DeletePopupWindow";
 
 export const StationMastersDeletePopup: React.FC<{ deletingStationMaster: StationMaster|null, onClose: () => void }> = ({ deletingStationMaster, onClose }) => {

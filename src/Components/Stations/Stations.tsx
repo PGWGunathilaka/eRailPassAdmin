@@ -2,7 +2,7 @@ import { AppBar, Box, Tab, Tabs, Typography } from "@mui/material";
 import React, { Children } from "react";
 import { CSSProperties } from "styled-components";
 import { StationsDetails } from "./StationsDetails";
-import { SLine } from "../../Types/Station";
+import { SLine } from "../../models/Station";
 const navBarStyles: CSSProperties = {
   justifyContent: 'space-between',
   alignItems: 'center',

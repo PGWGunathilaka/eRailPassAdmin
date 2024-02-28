@@ -5,7 +5,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import React, { useMemo } from "react";
-import { SLine, Station } from "../../Types/Station";
+import { SLine, Station } from "../../models/Station";
 import DeletePopupWindow from '../DeletePopupWindow';
 import { StationDeletePopup } from './StationDeletePopup';
 interface StationDetailsProps {

@@ -3,8 +3,8 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import React, { useMemo } from "react";
-import { Checker } from "../../Types/Checker";
-import { UserType } from '../../Types/UserType';
+import { Checker } from "../../models/Checker";
+import { UserType } from '../../models/UserType';
 import { CheckersDeletePopup } from './CheckersDeletePopup';
 export const Checkers: React.FunctionComponent = () => {
     const [deletingChecker, setDeletingChecker] = React.useState<Checker | null>(null);

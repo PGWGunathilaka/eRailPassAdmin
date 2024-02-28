@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import { Checker } from "../../Types/Checker";
+import { Checker } from "../../models/Checker";
 import DeletePopupWindow from "../DeletePopupWindow";
 
 export const CheckersDeletePopup: React.FC<{ deletingChecker: Checker|null, onClose: () => void }> = ({ deletingChecker, onClose }) => {

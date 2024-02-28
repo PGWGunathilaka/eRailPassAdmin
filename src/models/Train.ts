@@ -1,4 +1,4 @@
-export enum trLine {
+export enum TrainLine {
     MAIN_LINE ="Main Line",
     MATALE_LINE = "Matale Line",
     PUTTALAM_LINE ="Puttalam Line",
@@ -9,7 +9,7 @@ export enum trLine {
     TRINCOMALEE_LINE='Trincomalee line',
     TALAIMANNAR_LINE = 'Talaimannar Line',
 }
-export enum trStatus {
+export enum TrainStatus {
     RUNNING = 'Running',
     MAINTAINING = 'in Maintaining',
     NO_SERVICE = 'out of service'
@@ -17,8 +17,8 @@ export enum trStatus {
 export interface Train {
     trNo : number;
     trName: string;
-    trLine: trLine;
+    trLine: TrainLine;
     trFrom: string;
     trTo:string;
-    trStatus: trStatus;
+    trStatus: TrainStatus;
   }

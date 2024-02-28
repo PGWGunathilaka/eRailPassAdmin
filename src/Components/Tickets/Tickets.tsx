@@ -4,36 +4,36 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useMemo } from "react";
-import { Ticket, tType, tZone } from "../../Types/Ticket";
+import { Ticket, TicketType, TicketZone } from "../../models/Ticket";
 export const Tickets: React.FunctionComponent = () => {// Create a state  
     const profiles: Ticket[] = useMemo(() => [{
-        tType:tType.NORMAL,
-        tZone: tZone.ZONE_1,
+        tType:TicketType.NORMAL,
+        tZone: TicketZone.ZONE_1,
         tClass1: "100.00",
         tClass2: "50.00",
         tClass3: "20.00"
     },
     {
-        tType:tType.INTERCITY,
-        tZone: tZone.ZONE_2,
+        tType:TicketType.INTERCITY,
+        tZone: TicketZone.ZONE_2,
         tClass1: "100.00",
         tClass2: "50.00",
         tClass3: "20.00"
     },{
-        tType:tType.RETURN,
-        tZone: tZone.ZONE_3,
+        tType:TicketType.RETURN,
+        tZone: TicketZone.ZONE_3,
         tClass1: "100.00",
         tClass2: "50.00",
         tClass3: "20.00"
     },{
-        tType:tType.NORMAL,
-        tZone: tZone.ZONE_4,
+        tType:TicketType.NORMAL,
+        tZone: TicketZone.ZONE_4,
         tClass1: "100.00",
         tClass2: "50.00",
         tClass3: "20.00"
     },{
-        tType:tType.BOOKING,
-        tZone: tZone.ZONE_5,
+        tType:TicketType.BOOKING,
+        tZone: TicketZone.ZONE_5,
         tClass1: "100.00",
         tClass2: "50.00",
         tClass3: "20.00"
