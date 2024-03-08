@@ -9,7 +9,7 @@ export const StationMastersDeletePopup: React.FC<{ deletingStationMaster: Statio
         <DeletePopupWindow open={!!deletingStationMaster} onClose={onClose} title='Delete Station Master'>
 
         <Typography gutterBottom>
-                        Are you sure you want to delete <b>Mr.{deletingStationMaster?.firstName}</b> Station Master? 
+                        Are you sure you want to delete <b>{`${deletingStationMaster?.firstName} ${deletingStationMaster?.lastName}`}</b>? 
                     </Typography>
         </DeletePopupWindow>
         </>

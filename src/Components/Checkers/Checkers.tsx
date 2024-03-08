@@ -1,125 +1,37 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
+import dayjs from 'dayjs';
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { UserService } from '../../Services/UserService';
 import { Checker } from "../../models/Checker";
-import { UserType } from '../../models/UserType';
 import { CheckersDeletePopup } from './CheckersDeletePopup';
 export const Checkers: React.FunctionComponent = () => {
     const [deletingChecker, setDeletingChecker] = React.useState<Checker | null>(null);
-    const profiles: Checker[] = useMemo(() => [{
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER,
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER
-    },
-    ], [])
+    const [profiles, setProfiles] = React.useState<Checker[]>([]);
+
+    useEffect(() => {
+        UserService.checkers().then(res => setProfiles(res.data))
+    }, [])
 
     const columns = useMemo<MRT_ColumnDef<Checker, any>[]>(
         () => [
             {
-                accessorKey: 'id', //access nested data with dot notation
+                accessorKey: '_id', //access nested data with dot notation
                 header: 'ID',
                 size: 80,
             },
             {
-                accessorKey: 'assignedDate', //access nested data with dot notation
+                accessorFn: (row) =>  dayjs(row.updatedAt).format("YYYY-MM-DD"), //access nested data with dot notation
                 header: 'Assigned Date',
+                id: 'updatedAt',
 
             },
             {
-                accessorKey: 'firstName', //access nested data with dot notation
+                accessorFn: (row) =>  `${row.firstName} ${row.lastName}`, //access nested data with dot notation
                 header: 'Checker Name',
-
+                id: 'firstName',
             },
         ],
         [],

@@ -1,81 +1,49 @@
-import { Box, IconButton, Table, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
-import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import { useMemo } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import { Box, IconButton } from "@mui/material";
+import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import React, { useEffect, useMemo } from "react";
+import { UserService } from "../Services/UserService";
 import { PendingApproval, PendingApprovalStatus } from "../models/PendingApproval";
-import { UserType } from "../models/UserType";
-export const PendingApprovals: React.FunctionComponent = () => {// Create a state  
+import dayjs from 'dayjs';
+export const PendingApprovals: React.FunctionComponent = () => {
 
-    const profiles: PendingApproval[] = useMemo(() => [{
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER,
-        status: PendingApprovalStatus.PENDING
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER,
-        status: PendingApprovalStatus.DECLINED
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER,
-        status: PendingApprovalStatus.PENDING
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER,
-        status: PendingApprovalStatus.PENDING
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER,
-        status: PendingApprovalStatus.DECLINED
-    }, {
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.CHECKER,
-        status: PendingApprovalStatus.PENDING
-    },
+    const [profiles, setProfiles] = React.useState<PendingApproval[]>([]);
 
-    ], []);
-
-    const sortedApprovals = useMemo(() => {
-        const declinedApprovals = profiles.filter(profile => profile.status === PendingApprovalStatus.DECLINED);
-        const pendingApprovals = profiles.filter(profile => profile.status !== PendingApprovalStatus.DECLINED);
-        return [...pendingApprovals, ...declinedApprovals];
-    }, []);
+    useEffect(() => {
+        UserService.pendingApprovals().then(res => setProfiles(res.data))
+    }, [])
 
 
     const columns = useMemo<MRT_ColumnDef<PendingApproval, any>[]>(
         () => [
             {
-                accessorKey: 'id', //access nested data with dot notation
+                accessorKey: '_id', //access nested data with dot notation
                 header: 'ID',
-                size: 80,   
+                size: 80,
             },
             {
-                accessorKey: 'assignedDate', //access nested data with dot notation
-                header: 'Assigned Date',
+                accessorFn: (row) =>  dayjs(row.updatedAt).format("YYYY-MM-DD"),
+                header: 'Created Date',
             },
             {
                 accessorKey: 'firstName', //access nested data with dot notation
                 header: 'Name',
+            },
+            {
+                accessorFn: (row) => {
+                    switch (row.approvalStatus) {
+                        case PendingApprovalStatus.PENDING:
+                            return "PENDING"
+                        case PendingApprovalStatus.APPROVED:
+                            return "APPROVED"
+                        case PendingApprovalStatus.DECLINED:
+                            return "DECLINED"
+                    }
+                }, //access nested data with dot notation
+                id: 'approvalStatus',
+                header: 'Status',
             },
         ],
         [],
@@ -83,24 +51,24 @@ export const PendingApprovals: React.FunctionComponent = () => {// Create a stat
 
     const table = useMaterialReactTable({
         columns,
-        data: sortedApprovals, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+        data: profiles || [], //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
         enableColumnFilters: false,
         enableRowActions: true,
         positionActionsColumn: 'last',
-                
+
         renderRowActions: ({ row }) => (
             <Box sx={{ display: "flex", justifyContent: 'center' }} >
-                {row.original.status === PendingApprovalStatus.PENDING && (
+                {row.original.approvalStatus === PendingApprovalStatus.PENDING && (
                     <IconButton onClick={() => console.info('Edit')}>
                         <CheckIcon />
                     </IconButton>
                 )}
-                {row.original.status === PendingApprovalStatus.PENDING && (
+                {row.original.approvalStatus === PendingApprovalStatus.PENDING && (
                     <IconButton onClick={() => console.info('Delete')}>
                         <CloseIcon />
                     </IconButton>
                 )}
-                {row.original.status === PendingApprovalStatus.DECLINED && (
+                {row.original.approvalStatus === PendingApprovalStatus.DECLINED && (
                     <IconButton onClick={() => console.info('Delete')}>
                         <SettingsBackupRestoreIcon />
                     </IconButton>

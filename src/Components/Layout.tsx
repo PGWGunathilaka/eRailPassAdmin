@@ -5,11 +5,14 @@ import DirectionsSubwayIcon from '@mui/icons-material/DirectionsSubway';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import PersonSharpIcon from '@mui/icons-material/PersonSharp';
 import StoreIcon from '@mui/icons-material/Store';
-import { ClickAwayListener, Grow, MenuItem, MenuList, Paper } from "@mui/material";
+import { Avatar, ClickAwayListener, Grow, MenuItem, MenuList, Paper } from "@mui/material";
 import Popper from '@mui/material/Popper';
 import React, { CSSProperties, useState } from "react";
 import { useNavigate } from "react-router-dom";
 export const Layout: React.FunctionComponent<{ children: any }> = ({ children }) => {
+    const adminData = {
+        profilePicture: 'url_of_profile_picture.jpg'
+    };
     const navigate = useNavigate()
     const [status, setStatus] = useState('inactive');
     const [open1, setOpen1] = React.useState(false);
@@ -150,7 +153,7 @@ export const Layout: React.FunctionComponent<{ children: any }> = ({ children })
                                 aria-labelledby="composition-button2"
                                 onKeyDown={handleListKeyDown}>
                                 <MenuItem onClick={() => { navigateTo('/profile') }}>Profile</MenuItem>
-                                <MenuItem onClick={() => { navigateTo('') }}>Log out</MenuItem>
+                                <MenuItem onClick={() => { navigateTo('/') }}>Log out</MenuItem>
                             </MenuList>
                         </ClickAwayListener>
                     </Paper>
@@ -166,6 +169,7 @@ export const Layout: React.FunctionComponent<{ children: any }> = ({ children })
                 width: '90%',
                 overflow: 'auto',
                 zIndex: 2,
+                backgroundColor: '#fff'
             }}>
             <div>  {children}</div>
         </div>
@@ -200,7 +204,7 @@ export const Layout: React.FunctionComponent<{ children: any }> = ({ children })
                     ...buttonStyles, background: status === 'active2' ? "white " : "initial",
                     color: status === 'active2' ? "black" : "white"
                 }}
-                onClick={() => handClick("active2")}>
+                onClick={() => {handClick("active2"); navigateTo('/reports')}}>
                 <InsertChartIcon></InsertChartIcon>
                 Reports
             </div>
@@ -228,12 +232,12 @@ export const Layout: React.FunctionComponent<{ children: any }> = ({ children })
                 aria-haspopup="true"
                 ref={anchorRef2}
                 style={{
-                    ...buttonStyles, padding: '10px',
-                    borderRadius: '5px', background: status === 'active5' ? "white " : "hsl(24, 89%, 71%)",
+                    ...buttonStyles,
+                    // borderRadius: '5px', background: status === 'active5' ? "white " : "hsl(24, 89%, 71%)",
                     color: status === 'active5' ? "black" : "white"
                 }}
                 onClick={() => { handClick("active5"); handleToggle2() }} >
-                <PersonSharpIcon />
+                <Avatar src={adminData.profilePicture} style={{ width: '60px', height: '60px' }} />
             </div>
         </div>
     </>

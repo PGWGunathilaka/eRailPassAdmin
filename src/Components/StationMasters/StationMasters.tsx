@@ -2,128 +2,40 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { UserService } from '../../Services/UserService';
 import { StationMaster } from "../../models/StationMaster";
-import { UserType } from '../../models/UserType';
-import { StationDeletePopup } from '../Stations/StationDeletePopup';
 import { StationMastersDeletePopup } from './StationMastersDeletePopup';
+import dayjs from 'dayjs';
 export const StationMasters: React.FunctionComponent = () => {// Create a state  
-    const [deletingStationMaster, setdeletingStationMaster] = React.useState<StationMaster | null>(null);
-    const profiles: StationMaster[] = useMemo(() => [{
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "009",
-        firstName: "Prasadini",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    },
-    {
-        assignedDate: "2021-05-07",
-        id: "005",
-        firstName: "Geethadhari",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "006",
-        firstName: "Ruwan",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "007",
-        firstName: "Prasad",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    }, {
-        assignedDate: "2021-05-07",
-        id: "008",
-        firstName: "Jayasinghe",
-        assignedStation: "Nugegoda",
-        userType: UserType.STATION_MASTER
-    },
-    ], [])
+    const [deletingStationMaster, setDeletingStationMaster] = React.useState<StationMaster | null>(null);
+    const [profiles, setProfiles] = React.useState<StationMaster[]>([]);
+
+    useEffect(() => {
+        UserService.stationMasters().then(res => setProfiles(res.data))
+    }, [])
+
 
     const columns = useMemo<MRT_ColumnDef<StationMaster, any>[]>(
         () => [
             {
-                accessorKey: 'id', //access nested data with dot notation
+                accessorKey: '_id', //access nested data with dot notation
                 header: 'ID',
                 size: 80,
             },
             {
-                accessorKey: 'assignedDate', //access nested data with dot notation
+                accessorFn: (row) =>  dayjs(row.updatedAt).format("YYYY-MM-DD"), //access nested data with dot notation
                 header: 'Assigned Date',
+                id: 'updatedAt',
 
             },
             {
-                accessorKey: 'firstName', //access nested data with dot notation
+                accessorFn: (row) =>  `${row.firstName} ${row.lastName}`, //access nested data with dot notation
                 header: 'Station Master Name',
-
+                id: 'firstName',
             },
             {
-                accessorKey: 'assignedStation',
+                accessorKey: 'station.sName',
                 header: 'Assigned Station',
 
             },
@@ -139,7 +51,7 @@ export const StationMasters: React.FunctionComponent = () => {// Create a state
         positionActionsColumn: 'last',
         renderRowActions: ({ row }) => (
             <Box sx={{ display: "flex" }}>
-                <IconButton onClick={() => setdeletingStationMaster(row.original)}>
+                <IconButton onClick={() => setDeletingStationMaster(row.original)}>
                     <DeleteIcon />
                 </IconButton>
                 <IconButton onClick={() => console.info('Delete')}>
@@ -150,6 +62,6 @@ export const StationMasters: React.FunctionComponent = () => {// Create a state
     });
     return <div style={{ width: '100%' }}>
         <MaterialReactTable table={table} />
-        <StationMastersDeletePopup deletingStationMaster={deletingStationMaster} onClose={() => setdeletingStationMaster(null)} />
+        <StationMastersDeletePopup deletingStationMaster={deletingStationMaster} onClose={() => setDeletingStationMaster(null)} />
     </div>
 }

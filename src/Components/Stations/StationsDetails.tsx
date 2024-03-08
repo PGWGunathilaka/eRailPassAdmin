@@ -1,70 +1,33 @@
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { StationService } from '../../Services/StationService';
 import { SLine, Station } from "../../models/Station";
-import DeletePopupWindow from '../DeletePopupWindow';
 import { StationDeletePopup } from './StationDeletePopup';
 interface StationDetailsProps {
     sLine: SLine;
 }
-export const StationsDetails: React.FunctionComponent <StationDetailsProps>= ({sLine}) => {
-    const [deletingStation, setDeletingStation] = React.useState<Station|null>(null);
-    const stations: Station[] = useMemo(() => [{
-        sId: "s005",
-        sName: "Panadura",
-        sLine: SLine.TRINCOMALEE_LINE,
-        smId: "sm003",
-        stationMasterName: "PRASA"
-    },
-    {
-        sId: "s007",
-        sName: "pinwatta",
-        sLine: SLine.TALAIMANNAR_LINE,
-        smId: "sm043",
-        stationMasterName: "PRASA"
-    },
-    {
-        sId: "s010",
-        sName: "moratuwa",
-        sLine: SLine.NORTHER_LINE,
-        smId: "sm008",
-        stationMasterName: "PRASA"
-    },
-    {
-        sId: "s025",
-        sName: "meerigama",
-        sLine: SLine.PUTTALAM_LINE,
-        smId: "sm006",
-        stationMasterName: "PRASA"
-    },
-    {
-        sId: "s032",
-        sName: "wadduwa",
-        sLine: SLine.COAST_LINE,
-        smId: "sm083",
-        stationMasterName: "PRASA"
-    },
-    {
-        sId: "s060",
-        sName: "weyangoda",
-        sLine: SLine.KV_LINE,
-        smId: "sm043",
-        stationMasterName: "PRASA"
-    },
-    ], [])
-    const filteredData = useMemo(()=>{
-        return stations.filter((station)=>
-     station.sLine ===sLine);
-    }, [sLine])
-    
+export const StationsDetails: React.FunctionComponent<StationDetailsProps> = ({ sLine }) => {
+    const [deletingStation, setDeletingStation] = React.useState<Station | null>(null);
+    const [stations, setStations] = React.useState<Station[]>([]);
+    const [lineStations, setLineStations] = React.useState<Station[]>([]);
+
+    useEffect(() => {
+        StationService.stations().then(res => setStations(res.data))
+    }, [])
+
+    useEffect(() => {
+        const ls = (stations || []).filter(s => s.sLine === sLine)
+        setLineStations(ls)
+    }, [sLine, stations])
+
     const columns = useMemo<MRT_ColumnDef<Station, any>[]>(
         () => [
             {
-                accessorKey: 'sId', //access nested data with dot notation
+                accessorKey: '_id', //access nested data with dot notation
                 header: 'Station ID',
                 size: 30,
             },
@@ -73,15 +36,15 @@ export const StationsDetails: React.FunctionComponent <StationDetailsProps>= ({s
                 header: 'Station Name',
 
             }, {
-                accessorKey: 'smId',
+                accessorKey: 'sm._id',
                 header: 'Station Master ID',
                 size: 30,
 
             },
             {
-                accessorKey: 'stationMasterName',
+                accessorFn: (row) =>  `${row.sm.firstName} ${row.sm.lastName}`, //access nested data with dot notation
                 header: 'Station Master Name',
-
+                id: 'firstName',
             },
         ],
         [],
@@ -89,7 +52,7 @@ export const StationsDetails: React.FunctionComponent <StationDetailsProps>= ({s
 
     const table = useMaterialReactTable({
         columns,
-        data: filteredData, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+        data: lineStations, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
         enableColumnFilters: false,
         enableEditing: true,
         enableRowActions: true,
@@ -112,6 +75,6 @@ export const StationsDetails: React.FunctionComponent <StationDetailsProps>= ({s
                 <AddBusinessIcon />
             </IconButton>
         </Box>
-        <StationDeletePopup deletingStation={deletingStation} onClose={()=>setDeletingStation(null)} />
+        <StationDeletePopup deletingStation={deletingStation} onClose={() => setDeletingStation(null)} />
     </div>
 }

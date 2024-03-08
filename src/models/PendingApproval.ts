@@ -1,11 +1,14 @@
-import { User, UserType } from "./UserType";
+import { Checker } from "./Checker";
+import { StationMaster } from "./StationMaster";
 
 export enum PendingApprovalStatus {
     PENDING,
     APPROVED,
     DECLINED
 }
-export interface PendingApproval extends User {
-       userType: UserType.STATION_MASTER | UserType.CHECKER
-       status:PendingApprovalStatus
-   };
+
+export interface PendingApprovalUser {
+    approvalStatus: PendingApprovalStatus
+};
+
+export type PendingApproval = StationMaster | Checker

@@ -1,20 +1,20 @@
-import { EnumDeclaration } from "typescript";
 
 export enum SLine {
-    MAIN_LINE,
-    MATALE_LINE,
-    PUTTALAM_LINE,
-    NORTHER_LINE,
-    BATTICOLOA_LINE,
-    COAST_LINE,
-    KV_LINE,
-    TRINCOMALEE_LINE,
-    TALAIMANNAR_LINE,
+    MAIN_LINE = 5,
+    MATALE_LINE = 7,
+    PUTTALAM_LINE = 10,
+    NORTHER_LINE = 9,
+    BATTICOLOA_LINE = 1,
+    COASTAL_LINE = 2,
+    KV_LINE = 3,
+    TRINCOMALEE_LINE = 11,
+    TALAIMANNAR_LINE = 6,
 }
+
 export interface Station {
     sId:string;
     sName: string;
     sLine:SLine;
-    smId: string;
+    sm: {id: string, firstName: string, lastName: string};
     stationMasterName: string;
 }

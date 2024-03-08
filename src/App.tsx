@@ -9,25 +9,37 @@ import TicketDetails from './Components/Tickets/TicketDetails';
 import TrainProfiles from './Components/TrainProfiles';
 import { AdminProfile } from './Components/AdminProfile';
 import LoginPage from './Components/LoginPage';
+import Reports from './Components/Reports/Reports';
+import PassengerRegistration from './Components/Reports/PassengerRegistration';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import FinancialActivity from './Components/Reports/FinancialActivity';
+import CheckerPerformance from './Components/Reports/CheckerPerformance';
+import StationActivity from './Components/Reports/StationActivity';
 
 function App() {
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="App">
         <header className="App-header">                    
             <Routes>
-            <Route path='/' element={<LoginPage />} />
-              <Route path='/profile' element={<Layout><AdminProfile /></Layout>} />
+            <Route path='/' element={<LoginPage />} />'
+              <Route path='/profile' element={<Layout><AdminProfile /></Layout>} /> 
               <Route path='/station-masters' element={<Layout><StationMasters /></Layout>} />
               <Route path='stations' element={<Layout><Stations /></Layout>} />
               <Route path='checkers' element={<Layout><Checkers /></Layout>} />
               <Route path='pending-approvals' element={<Layout><PendingApprovals /></Layout>} />
               <Route path='ticket-details' element={<Layout><TicketDetails /></Layout>} />
+              <Route path='reports' element={<Layout><Reports/></Layout>} />
+              <Route path='/passenger-registration' element={<Layout><PassengerRegistration /></Layout>} />
+              <Route path='/checker-performance' element={<Layout><CheckerPerformance /></Layout>} />
+              <Route path='/station-activity' element={<Layout><StationActivity /></Layout>} />
+              <Route path='/financial-activity' element={<Layout><FinancialActivity /></Layout>}/>
               <Route path='train-profiles' element={<Layout><TrainProfiles /></Layout>} />
             </Routes>
         </header>
       </div>
-    </>
+      </LocalizationProvider>
   );
 }
 
