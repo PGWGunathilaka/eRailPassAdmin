@@ -1,6 +1,5 @@
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import React, { useEffect, useMemo } from "react";
@@ -12,11 +11,11 @@ interface StationDetailsProps {
 }
 export const StationsDetails: React.FunctionComponent<StationDetailsProps> = ({ sLine }) => {
     const [deletingStation, setDeletingStation] = React.useState<Station | null>(null);
-    const [stations, setStations] = React.useState<Station[]>([]);
+    const [stations, setStations] = React.useState<Station[]>([]); 
     const [lineStations, setLineStations] = React.useState<Station[]>([]);
 
     useEffect(() => {
-        StationService.stations().then(res => setStations(res.data))
+        StationService.stations().then(res => setStations(res.data)) // get data for station
     }, [])
 
     useEffect(() => {
@@ -36,13 +35,14 @@ export const StationsDetails: React.FunctionComponent<StationDetailsProps> = ({ 
                 header: 'Station Name',
 
             }, {
-                accessorKey: 'sm._id',
-                header: 'Station Master ID',
+                accessorFn: (row) => SLine[row.sLine].replace("_"," "),  
+                accessorKey: 'sLine',
+                header: 'Railway Line',
                 size: 30,
 
             },
             {
-                accessorFn: (row) =>  `${row.sm.firstName} ${row.sm.lastName}`, //access nested data with dot notation
+                accessorFn: (row) =>  `${row.sm?.firstName ?? ""} ${row.sm?.lastName ?? ""}`, //access nested data with dot notation
                 header: 'Station Master Name',
                 id: 'firstName',
             },
@@ -51,6 +51,7 @@ export const StationsDetails: React.FunctionComponent<StationDetailsProps> = ({ 
     );
 
     const table = useMaterialReactTable({
+        enableStickyHeader:true,
         columns,
         data: lineStations, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
         enableColumnFilters: false,
@@ -62,12 +63,16 @@ export const StationsDetails: React.FunctionComponent<StationDetailsProps> = ({ 
                 <IconButton onClick={() => setDeletingStation(row.original)}>
                     <DeleteIcon />
                 </IconButton>
-                <IconButton onClick={() => console.info('View')}>
-                    <PreviewIcon />
-                </IconButton>
             </Box>
         ),
     });
+    const handleDelete = (isDeleted: boolean) => {
+        if (isDeleted) {
+            const profilesWithoutDeleted = stations.filter(p => p._id !== deletingStation?._id)
+            setStations(profilesWithoutDeleted)
+        }
+        setDeletingStation(null)
+    }
     return <div style={{ width: '100%' }}>
         <MaterialReactTable table={table} />
         <Box sx={{ display: "flex" }}>
@@ -75,6 +80,6 @@ export const StationsDetails: React.FunctionComponent<StationDetailsProps> = ({ 
                 <AddBusinessIcon />
             </IconButton>
         </Box>
-        <StationDeletePopup deletingStation={deletingStation} onClose={() => setDeletingStation(null)} />
+        <StationDeletePopup deletingStation={deletingStation} onComplete={(isDeleted) => handleDelete(isDeleted)} />
     </div>
 }

@@ -1,31 +1,43 @@
 import PeopleAltTwoToneIcon from '@mui/icons-material/PeopleAltTwoTone';
 import { MenuItem, Select, Typography } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers';
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import groupBy from "object.groupby";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { passengerRegistrationData } from "./PassengerRegistrationData";
+import { UserService } from '../../Services/UserService';
+
+export type StatData = { _id: Dayjs, count: number };
 
 export const PassengerRegistration: React.FunctionComponent = () => {// Create a state  
     const [filterBy, setFilterBy] = useState<'Daily' | 'Monthly' | 'Yearly'>('Daily');
     const [fromDate, setFromDate] = useState<Date | null>(null);
+    const [statData, setStatData] = useState<StatData[]>([]);
     const [toDate, setToDate] = useState<Date | null>(null);
-    const filteredData = passengerRegistrationData.filter(item => {
+
+    const convertStrToDate = (entry: { _id: string, count: number }): StatData => {
+        return { _id: dayjs(entry._id), count: entry.count }
+    }
+
+    useEffect(() => {
+        UserService.passengerStats().then(res => setStatData(res.data.map(convertStrToDate))) // get data for station
+    }, [])
+
+    const filteredData = (statData ||[]).filter(item => {
         if (fromDate && toDate) {
-            return item.date.isAfter(fromDate) && item.date.isBefore(toDate); // '[]' includes both from and to dates
+            return item._id.isAfter(fromDate) && item._id.isBefore(toDate); // '[]' includes both from and to dates
         }
         return true; // If no date range is selected, return all data
     });
-    
-    const dataRaw = groupBy<{ date: Dayjs, count: number }, string>(filteredData, (item: any) => {
+
+    const dataRaw = groupBy<StatData, string>(filteredData, (item) => {
         switch (filterBy) {
             case "Daily":
-                return item.date.format("YYYY-MM-DD")
+                return item._id.format("YYYY-MM-DD")
             case "Monthly":
-                return item.date.format("YYYY-MM")
+                return item._id.format("YYYY-MM")
             case "Yearly":
-                return item.date.format("YYYY")
+                return item._id.format("YYYY")
             default:
                 return '';
         }
@@ -41,9 +53,9 @@ export const PassengerRegistration: React.FunctionComponent = () => {// Create a
                 <div style={{ padding: '12px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
                     <Typography variant="h5" style={{ display: 'flex', alignItems: 'center', color: '#222222' }}> <PeopleAltTwoToneIcon style={{ marginRight: "10px" }} /> Passenger Registrations</Typography>
-                    <div style={{display: 'flex', gap: '10px', flexDirection:'row'}}>
+                    <div style={{ display: 'flex', gap: '10px', flexDirection: 'row' }}>
                         <DatePicker
-                            sx={{ width: '150px', '& .MuiInputBase-root': { fontSize: '0.875rem' }}}
+                            sx={{ width: '150px', '& .MuiInputBase-root': { fontSize: '0.875rem' } }}
                             label="From Date"
                             disableFuture
                             value={fromDate}
@@ -51,7 +63,7 @@ export const PassengerRegistration: React.FunctionComponent = () => {// Create a
                             slotProps={{ textField: { size: 'small' } }}
                         />
                         <DatePicker
-                            sx={{ width: '150px','& .MuiInputBase-root': { fontSize: '0.875rem' } }}
+                            sx={{ width: '150px', '& .MuiInputBase-root': { fontSize: '0.875rem' } }}
                             label="To Date"
                             disableFuture
                             value={toDate}
@@ -84,7 +96,7 @@ export const PassengerRegistration: React.FunctionComponent = () => {// Create a
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" height={filterBy==="Yearly" ? 20: 60} angle={filterBy==="Yearly" ? 0 : -45} interval={filterBy === "Daily" ? 10 : 0} textAnchor={filterBy=== "Yearly" ? "middle": "end"} tick={{ fontSize: filterBy === "Yearly" ? 24 : 12 }} />
+                        <XAxis dataKey="name" height={filterBy === "Yearly" ? 20 : 60} angle={filterBy === "Yearly" ? 0 : -45} interval={filterBy === "Daily" ? 10 : 0} textAnchor={filterBy === "Yearly" ? "middle" : "end"} tick={{ fontSize: filterBy === "Yearly" ? 24 : 12 }} />
                         <YAxis />
                         <Tooltip
                             wrapperStyle={{ color: 'black' }}

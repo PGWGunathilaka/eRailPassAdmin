@@ -1,5 +1,5 @@
 import { PendingApprovalUser } from "./PendingApproval";
-import { User, UserType } from "./UserType";
+import { User, UserType } from "./User";
 
 export interface Checker extends User, PendingApprovalUser {
     userType: UserType.CHECKER

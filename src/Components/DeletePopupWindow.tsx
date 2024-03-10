@@ -3,15 +3,20 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, 
 import React, { Children, ReactNode } from "react";
 import { Station } from '../models/Station';
 import WarningIcon from '@mui/icons-material/Warning';
-
 interface DeletePopupWindowProps { 
-    open: boolean, onClose: () => void, children: ReactNode, title: string }
-
-export default function DeletePopupWindow({ open, onClose, children, title }:DeletePopupWindowProps ) {
+    open: boolean, 
+    onComplete: (isDelete:boolean) => void, 
+    children: ReactNode, 
+    title: string 
+}
+    export default function DeletePopupWindow({ open, onComplete, children, title }:DeletePopupWindowProps ) {
 
     const handleClose = () => {
-        onClose();
+        onComplete(false);
     };
+    const handleDelete = () => {
+        onComplete(true);
+    }
 
     return (
         <React.Fragment>
@@ -42,7 +47,7 @@ export default function DeletePopupWindow({ open, onClose, children, title }:Del
                     <Button color="inherit" variant="contained" autoFocus onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button color="error" variant="contained" autoFocus onClick={handleClose}>
+                    <Button color="error" variant="contained" autoFocus onClick={handleDelete}>
                         Delete
                     </Button>
                 </DialogActions>

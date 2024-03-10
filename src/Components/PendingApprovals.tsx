@@ -7,6 +7,7 @@ import React, { useEffect, useMemo } from "react";
 import { UserService } from "../Services/UserService";
 import { PendingApproval, PendingApprovalStatus } from "../models/PendingApproval";
 import dayjs from 'dayjs';
+import { UserType } from '../models/User';
 export const PendingApprovals: React.FunctionComponent = () => {
 
     const [profiles, setProfiles] = React.useState<PendingApproval[]>([]);
@@ -15,6 +16,24 @@ export const PendingApprovals: React.FunctionComponent = () => {
         UserService.pendingApprovals().then(res => setProfiles(res.data))
     }, [])
 
+    const fetchPendingApprovals = async () => {
+        try {
+            const response = await UserService.pendingApprovals();
+            setProfiles(response.data);
+        } catch (error) {
+            console.error("Error fetching pending approvals:", error);
+        }
+    };
+
+    const handleApproval = async (id: string, newStatus: PendingApprovalStatus) => {
+        try {
+            await UserService.updateApprovalStatus(id, newStatus);
+            // After updating, fetch the updated list of pending approvals
+            fetchPendingApprovals();
+        } catch (error) {
+            console.error("Error updating approval status:", error);
+        }
+    };
 
     const columns = useMemo<MRT_ColumnDef<PendingApproval, any>[]>(
         () => [
@@ -28,8 +47,12 @@ export const PendingApprovals: React.FunctionComponent = () => {
                 header: 'Created Date',
             },
             {
-                accessorKey: 'firstName', //access nested data with dot notation
+                accessorFn: (row) => `${row.firstName} ${row.lastName}`, 
                 header: 'Name',
+            },
+            {
+                accessorFn: (row) => UserType[row.role],  
+                header: 'Designation',
             },
             {
                 accessorFn: (row) => {
@@ -58,22 +81,14 @@ export const PendingApprovals: React.FunctionComponent = () => {
 
         renderRowActions: ({ row }) => (
             <Box sx={{ display: "flex", justifyContent: 'center' }} >
-                {row.original.approvalStatus === PendingApprovalStatus.PENDING && (
-                    <IconButton onClick={() => console.info('Edit')}>
+                
+                    <IconButton onClick={() => handleApproval(row.original._id, PendingApprovalStatus.APPROVED)}>
                         <CheckIcon />
                     </IconButton>
-                )}
-                {row.original.approvalStatus === PendingApprovalStatus.PENDING && (
-                    <IconButton onClick={() => console.info('Delete')}>
+                
+                    <IconButton onClick={() => handleApproval(row.original._id, PendingApprovalStatus.DECLINED)}>
                         <CloseIcon />
                     </IconButton>
-                )}
-                {row.original.approvalStatus === PendingApprovalStatus.DECLINED && (
-                    <IconButton onClick={() => console.info('Delete')}>
-                        <SettingsBackupRestoreIcon />
-                    </IconButton>
-                )}
-
             </Box>
         ),
     });

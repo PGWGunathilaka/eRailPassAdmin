@@ -1,12 +1,13 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import PreviewIcon from '@mui/icons-material/Preview';
 import { Box, IconButton } from "@mui/material";
+import dayjs from 'dayjs';
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import React, { useEffect, useMemo } from "react";
 import { UserService } from '../../Services/UserService';
 import { StationMaster } from "../../models/StationMaster";
 import { StationMastersDeletePopup } from './StationMastersDeletePopup';
-import dayjs from 'dayjs';
+
+
 export const StationMasters: React.FunctionComponent = () => {// Create a state  
     const [deletingStationMaster, setDeletingStationMaster] = React.useState<StationMaster | null>(null);
     const [profiles, setProfiles] = React.useState<StationMaster[]>([]);
@@ -24,13 +25,13 @@ export const StationMasters: React.FunctionComponent = () => {// Create a state
                 size: 80,
             },
             {
-                accessorFn: (row) =>  dayjs(row.updatedAt).format("YYYY-MM-DD"), //access nested data with dot notation
+                accessorFn: (row) => dayjs(row.updatedAt).format("YYYY-MM-DD"), //access nested data with dot notation
                 header: 'Assigned Date',
                 id: 'updatedAt',
 
             },
             {
-                accessorFn: (row) =>  `${row.firstName} ${row.lastName}`, //access nested data with dot notation
+                accessorFn: (row) => `${row.firstName} ${row.lastName}`, //access nested data with dot notation
                 header: 'Station Master Name',
                 id: 'firstName',
             },
@@ -54,14 +55,19 @@ export const StationMasters: React.FunctionComponent = () => {// Create a state
                 <IconButton onClick={() => setDeletingStationMaster(row.original)}>
                     <DeleteIcon />
                 </IconButton>
-                <IconButton onClick={() => console.info('Delete')}>
-                    <PreviewIcon />
-                </IconButton>
             </Box>
         ),
     });
+    const handleDelete = (isDeleted: boolean) => {
+        if (isDeleted) {
+            const profilesWithoutDeleted = profiles.filter(p => p._id !== deletingStationMaster?._id)
+            setProfiles(profilesWithoutDeleted)
+        }
+        setDeletingStationMaster(null)
+    }
+
     return <div style={{ width: '100%' }}>
         <MaterialReactTable table={table} />
-        <StationMastersDeletePopup deletingStationMaster={deletingStationMaster} onClose={() => setDeletingStationMaster(null)} />
+        <StationMastersDeletePopup deletingStationMaster={deletingStationMaster} onComplete={(isDeleted) => handleDelete(isDeleted)} />
     </div>
 }

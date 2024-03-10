@@ -1,14 +1,15 @@
 export enum UserType {
+    ADMIN,
     STATION_MASTER,
     CHECKER,
-    ADMIN
+    PASSENGER,
 }
 export interface User {
     assignedDate : string;
-    id : string;
+    _id : string;
     firstName: string;
     lastName?: string;
     address?: string;
     city?: string;
-    userType: UserType;
+    role: UserType;
 }

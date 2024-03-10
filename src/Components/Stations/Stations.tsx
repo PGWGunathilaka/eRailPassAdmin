@@ -5,6 +5,8 @@ import { StationsDetails } from "./StationsDetails";
 import { SLine, Station } from "../../models/Station";
 import axios from "axios";
 import { StationService } from "../../Services/StationService";
+
+
 const navBarStyles: CSSProperties = {
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -114,5 +116,6 @@ export const Stations = () => {
     </Box>
     
   );
+
 }
 export default Stations;

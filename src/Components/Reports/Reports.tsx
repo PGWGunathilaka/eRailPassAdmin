@@ -45,7 +45,7 @@ export const Reports: React.FunctionComponent = () => {// Create a state
                     ...buttonStyles, background: status === 'active1' ? "#f7a873" : "black",
                     color: status === 'active1' ? "black" : "white"
                 }}
-                onClick={() => { handClick("active1");navigateTo('/passenger-registration')}}>
+                onClick={() => { handClick("active1");navigateTo('passenger-registration')}}>
                 <PeopleAltTwoToneIcon sx={{width: '30px', height: '30px'}} />
                 Passenger Registrations
             </div>
@@ -54,7 +54,7 @@ export const Reports: React.FunctionComponent = () => {// Create a state
                     ...buttonStyles, background: status === 'active3' ? "#f7a873" : "black",
                     color: status === 'active3' ? "black" : "white"
                 }}
-                onClick={() => { handClick("active3");navigateTo('/checker-performance')}}>
+                onClick={() => { handClick("active3");navigateTo('checker-performance')}}>
                 <ConfirmationNumberTwoToneIcon sx={{width: '30px', height: '30px'}} />
                 Checkers Performance
             </div>
@@ -63,7 +63,7 @@ export const Reports: React.FunctionComponent = () => {// Create a state
                     ...buttonStyles, background: status === 'active4' ? "#f7a873" : "black",
                     color: status === 'active4' ? "black" : "white"
                 }}
-                onClick={() => { handClick("active4");navigateTo('/station-activity')}}>
+                onClick={() => { handClick("active4");navigateTo('station-activity')}}>
                 <TrainTwoToneIcon sx={{width: '30px', height: '30px'}} />
                 Station Activity
             </div>
@@ -72,7 +72,7 @@ export const Reports: React.FunctionComponent = () => {// Create a state
                     ...buttonStyles, background: status === 'active6' ? "#f7a873" : "black",
                     color: status === 'active6' ? "black" : "white"
                 }}
-                onClick={() => { handClick("active6");navigateTo('/financial-activity')}}>
+                onClick={() => { handClick("active6");navigateTo('financial-activity')}}>
                     <MonetizationOnTwoToneIcon sx={{width: '30px', height: '30px'}} />
                 Financial summaries
             </div>

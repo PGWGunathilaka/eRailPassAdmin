@@ -12,7 +12,7 @@ export enum SLine {
 }
 
 export interface Station {
-    sId:string;
+    _id:string;
     sName: string;
     sLine:SLine;
     sm: {id: string, firstName: string, lastName: string};

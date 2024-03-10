@@ -5,14 +5,16 @@ import { Station } from "../../models/Station";
 import { UserService } from "../../Services/UserService";
 import { infoPopup } from "../../util/InfoPopup";
 import { StationService } from "../../Services/StationService";
+import { Train } from "../../models/Train";
+import { TrainService } from "../../Services/TrainService";
 
-export const StationDeletePopup: React.FC<{ deletingStation: Station|null, onComplete: (isDeleted: boolean) => void }> = ({ deletingStation, onComplete }) => {
+export const TrainDeletePopup: React.FC<{ deletingTrain: Train|null, onComplete: (isDeleted: boolean) => void }> = ({ deletingTrain, onComplete }) => {
     
-    const handleDeleteStationComplete = async (isDeleted: boolean) => {
+    const handleDeleteTrainComplete = async (isDeleted: boolean) => {
         if (isDeleted) {
-            const res = await StationService.deleteOne(deletingStation!._id)
+            const res = await TrainService.deleteOne(deletingTrain!._id)
             if (res.success && res.data === true) {
-                infoPopup("Station Deleted");
+                infoPopup("Train Removed");
                 onComplete(true)
             } else {
                 //TODO failed popup
@@ -26,10 +28,9 @@ export const StationDeletePopup: React.FC<{ deletingStation: Station|null, onCom
    
     return (
         <>
-        <DeletePopupWindow open={!!deletingStation} onComplete={(isDelete)=>handleDeleteStationComplete(isDelete) } title='Delete Station'>
-
+        <DeletePopupWindow open={!!deletingTrain} onComplete={(isDelete)=>handleDeleteTrainComplete(isDelete) } title='Delete Train'>
         <Typography gutterBottom>
-                        Are you sure you want to delete <b>{deletingStation?.sName}</b> station? 
+                        Are you sure you want to delete <b>{deletingTrain?.trName}</b> station? 
                     </Typography>
         </DeletePopupWindow>
         </>

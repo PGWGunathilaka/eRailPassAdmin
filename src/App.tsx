@@ -6,7 +6,7 @@ import { PendingApprovals } from './Components/PendingApprovals';
 import { StationMasters } from './Components/StationMasters/StationMasters';
 import { Stations } from './Components/Stations/Stations';
 import TicketDetails from './Components/Tickets/TicketDetails';
-import TrainProfiles from './Components/TrainProfiles';
+import TrainProfiles from './Components/Trains/TrainProfiles';
 import { AdminProfile } from './Components/AdminProfile';
 import LoginPage from './Components/LoginPage';
 import Reports from './Components/Reports/Reports';
@@ -31,10 +31,10 @@ function App() {
               <Route path='pending-approvals' element={<Layout><PendingApprovals /></Layout>} />
               <Route path='ticket-details' element={<Layout><TicketDetails /></Layout>} />
               <Route path='reports' element={<Layout><Reports/></Layout>} />
-              <Route path='/passenger-registration' element={<Layout><PassengerRegistration /></Layout>} />
-              <Route path='/checker-performance' element={<Layout><CheckerPerformance /></Layout>} />
-              <Route path='/station-activity' element={<Layout><StationActivity /></Layout>} />
-              <Route path='/financial-activity' element={<Layout><FinancialActivity /></Layout>}/>
+              <Route path='/reports/passenger-registration' element={<Layout><PassengerRegistration /></Layout>} />
+              <Route path='/reports/checker-performance' element={<Layout><CheckerPerformance /></Layout>} />
+              <Route path='/reports/station-activity' element={<Layout><StationActivity /></Layout>} />
+              <Route path='/reports/financial-activity' element={<Layout><FinancialActivity /></Layout>}/>
               <Route path='train-profiles' element={<Layout><TrainProfiles /></Layout>} />
             </Routes>
         </header>

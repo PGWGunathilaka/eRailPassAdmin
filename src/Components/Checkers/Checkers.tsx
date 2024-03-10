@@ -23,21 +23,21 @@ export const Checkers: React.FunctionComponent = () => {
                 size: 80,
             },
             {
-                accessorFn: (row) =>  dayjs(row.updatedAt).format("YYYY-MM-DD"), //access nested data with dot notation
+                accessorFn: (row) => dayjs(row.updatedAt).format("YYYY-MM-DD"), //access nested data with dot notation
                 header: 'Assigned Date',
                 id: 'updatedAt',
 
             },
             {
-                accessorFn: (row) =>  `${row.firstName} ${row.lastName}`, //access nested data with dot notation
+                accessorFn: (row) => `${row.firstName} ${row.lastName}`, //access nested data with dot notation
                 header: 'Checker Name',
                 id: 'firstName',
             },
         ],
         [],
     );
-
     const table = useMaterialReactTable({
+        enableStickyHeader:true,
         columns,
         data: profiles, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
         enableColumnFilters: false,
@@ -49,14 +49,19 @@ export const Checkers: React.FunctionComponent = () => {
                 <IconButton onClick={() => setDeletingChecker(row.original)}>
                     <DeleteIcon />
                 </IconButton>
-                <IconButton onClick={() => console.info('Delete')}>
-                    <PreviewIcon />
-                </IconButton>
             </Box>
         ),
     });
+    const handleDelete = (isDeleted: boolean) => {
+        if (isDeleted) {
+            const profilesWithoutDeleted = profiles.filter(p => p._id !== deletingChecker?._id)
+            setProfiles(profilesWithoutDeleted)
+        }
+        setDeletingChecker(null)
+    }
+
     return <div style={{ width: '100%' }}>
         <MaterialReactTable table={table} />
-        <CheckersDeletePopup deletingChecker={deletingChecker} onClose={() => setDeletingChecker(null)} />
+        <CheckersDeletePopup deletingChecker={deletingChecker} onComplete={(isDeleted) => handleDelete(isDeleted)} />
     </div>
 }

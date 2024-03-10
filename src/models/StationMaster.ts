@@ -1,5 +1,5 @@
 import { PendingApprovalUser } from "./PendingApproval";
-import { User, UserType } from "./UserType";
+import { User, UserType } from "./User";
 
 export interface StationMaster extends User, PendingApprovalUser {
     assignedStation : string

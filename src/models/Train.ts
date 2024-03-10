@@ -1,13 +1,13 @@
 export enum TrainLine {
-    MAIN_LINE ="Main Line",
-    MATALE_LINE = "Matale Line",
-    PUTTALAM_LINE ="Puttalam Line",
-    NORTHER_LINE = "Norther Line",
-    BATTICOLOA_LINE = 'Batticoloa Line',
-    COAST_LINE ='Coast Line',
-    KV_LINE ='Kv Line',
-    TRINCOMALEE_LINE='Trincomalee line',
-    TALAIMANNAR_LINE = 'Talaimannar Line',
+    MAIN_LINE = 5,
+    MATALE_LINE = 7,
+    PUTTALAM_LINE = 10,
+    NORTHERN_LINE = 9,
+    BATTICOLOA_LINE = 1,
+    COASTAL_LINE = 2,
+    KV_LINE = 3,
+    TRINCOMALEE_LINE = 11,
+    TALAIMANNAR_LINE = 6,
 }
 export enum TrainStatus {
     RUNNING = 'Running',
@@ -15,7 +15,7 @@ export enum TrainStatus {
     NO_SERVICE = 'out of service'
 }
 export interface Train {
-    trNo : number;
+    _id : string;
     trName: string;
     trLine: TrainLine;
     trFrom: string;
