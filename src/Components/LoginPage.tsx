@@ -1,20 +1,29 @@
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { AuthService } from "../Services/AuthService";
+import { errorPopup, infoPopup } from "../util/popups";
+import { Navigate, useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
+export const LoginPage: React.FC = () => {
   const [error, setError] = useState("");
-
+  const [login, setLogin] = React.useState<string>();
+  const navigate = useNavigate()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
 
-    if (true || (email === "prasadini.gunathilaka@yahoo.com" && password === "password")) {
-      window.location.href = "/profile";
-    } else {
-      setError("Invalid email or password");
-    }
+    AuthService.login(email, password).then(res => {
+      if (res.success) {
+        AuthService.saveToken(res.data);
+        setLogin(res.data);
+        navigate('/profile');
+      } else {
+        errorPopup('icorrect')
+      }
+    }) // get data for station
+
   };
 
   return (

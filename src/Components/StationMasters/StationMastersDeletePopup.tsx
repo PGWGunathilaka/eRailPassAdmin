@@ -3,7 +3,7 @@ import React from "react";
 import { StationMaster } from "../../models/StationMaster";
 import DeletePopupWindow from "../DeletePopupWindow";
 import { UserService } from "../../Services/UserService";
-import { infoPopup } from "../../util/InfoPopup";
+import { infoPopup } from "../../util/popups";
 
 interface StationMastersDeletePopupProps {
     deletingStationMaster: StationMaster | null,

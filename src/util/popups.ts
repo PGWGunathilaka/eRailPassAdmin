@@ -1,8 +1,5 @@
 import Swal from 'sweetalert2';
 
-const titleStyle = {
-    fontsize: "14px" 
-}
 
 export function infoPopup (title:string){
     Swal.fire({
@@ -12,7 +9,19 @@ export function infoPopup (title:string){
         showConfirmButton: false,
         timer: 1500,
         customClass: {
+            icon: 'iconStyle',
             title: 'titleStyle' // Apply custom class to the title
         }
       })
 } 
+
+export function errorPopup (title:string){
+    Swal.fire({
+        icon: "error",
+        title: "Incorrect User name or password",
+        customClass: {
+            icon: 'iconStyle',
+            title: 'titleStyle' // Apply custom class to the title
+        }
+      });
+}

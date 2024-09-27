@@ -3,7 +3,7 @@ import React from "react";
 import { Checker } from "../../models/Checker";
 import DeletePopupWindow from "../DeletePopupWindow";
 import { UserService } from "../../Services/UserService";
-import { infoPopup } from "../../util/InfoPopup";
+import { infoPopup } from "../../util/popups";
 
 export const CheckersDeletePopup: React.FC<{ deletingChecker: Checker | null, onComplete: (isDeleted: boolean) => void }> = ({ deletingChecker, onComplete }) => {
 

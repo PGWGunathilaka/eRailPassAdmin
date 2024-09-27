@@ -14,6 +14,10 @@ export enum TrainStatus {
     MAINTAINING = 'in Maintaining',
     NO_SERVICE = 'out of service'
 }
+export interface Stop {
+    station: string,
+    time : Date,
+}
 export interface Train {
     _id : string;
     trName: string;
@@ -21,4 +25,5 @@ export interface Train {
     trFrom: string;
     trTo:string;
     trStatus: TrainStatus;
+    stops: Stop[]
   }

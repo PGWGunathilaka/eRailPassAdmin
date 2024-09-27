@@ -3,9 +3,10 @@ import { MenuItem, Select, Typography } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from "dayjs";
 import groupBy from "object.groupby";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { UserService } from '../../Services/UserService';
+import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 
 export type StatData = { _id: Dayjs, count: number };
 
@@ -44,7 +45,28 @@ export const PassengerRegistration: React.FunctionComponent = () => {// Create a
     })
     const data = Object.entries(dataRaw).map(([name, values]) => ({ name, count: values.reduce((c, i) => c + i.count, 0) }))
 
+    const columns = useMemo<MRT_ColumnDef<(typeof statData)[number], any>[]>(
+        () => [
+            {
+                accessorFn: (row) => row._id.format('YYYY-MM-DD'), //date not accept by table
+                header: 'Date',
+                size: 40,
+            },
+            {
+                accessorKey: 'count',
+                header: 'Passenger Count',
+                size: 30,
+            },
+        ],
+        [],
+    );
 
+    const table = useMaterialReactTable({
+        columns,
+        data: statData,
+        enableColumnFilters: false,
+        enableRowActions: false,
+    });
 
     return <div style={{ width: '100%', maxHeight: 'calc(100vh - 180px)', height: '100vh' }}>
 
@@ -120,6 +142,9 @@ export const PassengerRegistration: React.FunctionComponent = () => {// Create a
                     </BarChart>
                 </ResponsiveContainer>
             </div>
+            <div style={{ marginTop: '20px', borderTop: '2px solid black' }} >
+                        <MaterialReactTable table={table} />
+                    </div>
         </div>
     </div>
 }

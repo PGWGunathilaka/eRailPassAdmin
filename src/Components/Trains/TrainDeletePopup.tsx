@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import DeletePopupWindow from "../DeletePopupWindow";
 import { Station } from "../../models/Station";
 import { UserService } from "../../Services/UserService";
-import { infoPopup } from "../../util/InfoPopup";
+import { infoPopup } from "../../util/popups";
 import { StationService } from "../../Services/StationService";
 import { Train } from "../../models/Train";
 import { TrainService } from "../../Services/TrainService";

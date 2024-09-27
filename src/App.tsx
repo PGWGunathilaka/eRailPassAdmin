@@ -8,7 +8,6 @@ import { Stations } from './Components/Stations/Stations';
 import TicketDetails from './Components/Tickets/TicketDetails';
 import TrainProfiles from './Components/Trains/TrainProfiles';
 import { AdminProfile } from './Components/AdminProfile';
-import LoginPage from './Components/LoginPage';
 import Reports from './Components/Reports/Reports';
 import PassengerRegistration from './Components/Reports/PassengerRegistration';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -16,6 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import FinancialActivity from './Components/Reports/FinancialActivity';
 import CheckerPerformance from './Components/Reports/CheckerPerformance';
 import StationActivity from './Components/Reports/StationActivity';
+import { LoginPage } from './Components/LoginPage';
 
 function App() {
   return (

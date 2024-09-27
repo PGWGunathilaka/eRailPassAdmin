@@ -108,8 +108,6 @@ const CheckerPerformance: React.FunctionComponent = () => {
         positionActionsColumn: 'last',
     });
 
-    console.log("kkkk", dataRaw)
-
     return (
         <div style={{ width: '100%', maxHeight: 'calc(100vh - 180px)', height: '100vh' }}>
             <div style={{ background: "white", justifyContent: "center", flexWrap: 'wrap', width: '100%', height: '100%' }}>

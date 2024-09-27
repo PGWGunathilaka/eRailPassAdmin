@@ -15,7 +15,7 @@
 
 .App-header {
   background-color: hsl(24, 89%, 71%);
-   min-height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,8 +32,16 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
+.titleStyle {
+  font-size: 20px
+}
+
+.iconStyle {
+  font-size:x-small ;
+}

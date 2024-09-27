@@ -49,5 +49,5 @@ export class UserService {
         const endPoint = apiAdminUrl('user/ticket-checked-stats')
         return axios.get<void, ApiResponse<TicketCheckedStatsType[]>>(endPoint)
     }
-
+   
 }

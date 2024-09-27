@@ -1,13 +1,17 @@
 import TrainTwoToneIcon from '@mui/icons-material/TrainTwoTone';
 import { DataGrid, GridColDef, GridColumnGroupingModel } from '@mui/x-data-grid';
 import { DatePicker } from '@mui/x-date-pickers';
-import React, { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Cell,Tooltip, Legend, Pie, PieChart, ResponsiveContainer, Sector, XAxis, YAxis } from 'recharts';
+import React, { useEffect, useState } from "react";
+import { Bar, BarChart, CartesianGrid, Cell, Tooltip, Legend, Pie, PieChart, ResponsiveContainer, Sector, XAxis, YAxis } from 'recharts';
 import { ActiveShape } from 'recharts/types/util/types';
-import { stationActivityData } from './StationActivityData';
-import { Button, MenuItem, Select,  Typography } from '@mui/material';
+import { Button, MenuItem, Select, Typography } from '@mui/material';
 import { PieSectorDataItem } from 'recharts/types/polar/Pie';
 import PreviewIcon from '@mui/icons-material/Preview';
+import { PassengerTicketStatsType, StationService } from '../../Services/StationService';
+import dayjs, { Dayjs } from 'dayjs';
+import { TicketType } from '../../models/Ticket';
+
+export type StatData = { _id: Dayjs, sName: string, normal: number, reservation: number, seasonal: number, tickets: number };
 
 const renderActiveShape: ActiveShape<PieSectorDataItem> = (props: PieSectorDataItem) => {
     const RADIAN = Math.PI / 180;
@@ -61,7 +65,34 @@ const StationActivity: React.FunctionComponent = () => {
     const [toDate, setToDate] = useState<Date | null>(null);
     const [opacity, setOpacity] = useState<{ uv: number; pv: number; }>({ uv: 1, pv: 1 });
     const [activeIndex, setActiveIndex] = useState<number>(0);
-    const data = stationActivityData;
+    const [data, setData] = useState<StatData[]>();
+
+    const convertStrToDate = (entry: PassengerTicketStatsType): StatData => {
+        return {
+            _id: dayjs(entry._id.date),
+            sName: entry._id.station.sName,
+            normal: getTicketTypeCount(entry.ticketCounts, TicketType.NORMAL),
+            reservation: getTicketTypeCount(entry.ticketCounts, TicketType.BOOKING),
+            seasonal: getTicketTypeCount(entry.ticketCounts, TicketType.SEASON),
+            tickets: getTicketTypeCount(entry.ticketCounts, null),
+        }
+    }
+
+    const getTicketTypeCount = (input: PassengerTicketStatsType['ticketCounts'], type: number | null) => {
+        let count = 0;
+        for(const item of input){
+            if (type === null){
+                count+=item.count;
+            }else if (item.type === type) {
+                count+=item.count;
+            }
+        }
+        return count;
+    }
+
+    useEffect(() => {
+        StationService.passengerTicketStats().then(res => setData(res.data.map(convertStrToDate))) // get data for station
+    }, [])
 
     const onPieEnter = (_: any, index: number) => {
         setActiveIndex(index);
@@ -130,7 +161,7 @@ const StationActivity: React.FunctionComponent = () => {
             ],
         },
     ];
-    const rowsWithIds = stationActivityData.map((row, index) => ({
+    const rowsWithIds = (data || []).map((row, index) => ({
         ...row,
         id: index.toString(), // You can use any unique identifier here, like row date or a generated UUID
     }));
@@ -183,14 +214,14 @@ const StationActivity: React.FunctionComponent = () => {
                                     <Pie
                                         activeIndex={activeIndex}
                                         activeShape={renderActiveShape}
-                                        data={data.map((d) => ({ label: d.station, value: d.passengers }))}
+                                        data={(data || []).map((d) => ({ label: d.sName, value: d.tickets }))}
                                         innerRadius={45}
                                         outerRadius={120}
                                         dataKey="value"
                                         fill="#FFA500"
                                         onMouseEnter={onPieEnter}
                                     >
-                                        {data.map((_, index) => (
+                                        {(data || []).map((_, index) => (
                                             <Cell key={`cell-${index}`} />
                                         ))}
                                     </Pie>
@@ -222,7 +253,7 @@ const StationActivity: React.FunctionComponent = () => {
                             </ResponsiveContainer>
                         </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems:'center'}}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                         <DataGrid
                             experimentalFeatures={{ columnGrouping: true }}
                             rows={rowsWithIds}
